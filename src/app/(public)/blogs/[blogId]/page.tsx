@@ -1,4 +1,17 @@
 import BlogDetailsCard from "@/components/modules/Blogs/BlogDetailsCard";
+import { IBlogs } from "@/types";
+
+// export const generateStaticParams = () => {
+//   return [{ blogId: "1" }];
+// };
+export const generateStaticParams = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`);
+  const { data: blogs } = await res.json();
+
+  return blogs.slice(0, 2).map((blog: IBlogs) => ({
+    blogId: String(blog?.id),
+  }));
+};
 
 const BlogDetails = async ({
   params,
