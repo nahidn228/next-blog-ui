@@ -1,5 +1,12 @@
 import BlogCard from "@/components/modules/Blogs/BlogCard";
 import { IBlogs } from "@/types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "All Blogs | Next Blog",
+  description:
+    "Browse All Blogs post about React, fetch, nextJs, mongodb, MERN, Full-stack and many more",
+};
 
 const AllBlogsPage = async () => {
   // this is SSR
