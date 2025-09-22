@@ -4,11 +4,17 @@ import { IBlogs } from "@/types";
 
 export default async function HomePage() {
   // this is ISR
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`, {
+  //   next: {
+  //     revalidate: 30,
+  //   },
+  // });
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`, {
     next: {
-      revalidate: 30,
+      tags: ["BLOGS"],
     },
   });
+
   const { data: blogs } = await res.json();
   console.log(blogs);
   return (

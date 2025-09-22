@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const create = async (data: FormData) => {
@@ -9,6 +10,7 @@ export const create = async (data: FormData) => {
   const modifiedData = {
     ...blogInfo,
     authorId: 1,
+    isFeatured: Boolean(blogInfo.isFeatured),
     tags: blogInfo.tags
       .toString()
       .split(",")
@@ -26,7 +28,8 @@ export const create = async (data: FormData) => {
   });
   const result = await res.json();
 
-  if (result) {
+  if (result.id) {
+    revalidateTag("BLOGS");
     redirect("/blogs");
   }
 
