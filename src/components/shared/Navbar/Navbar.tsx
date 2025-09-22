@@ -2,9 +2,11 @@
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
-import { Logo } from "./logo";
+
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
+import { ModeToggle } from "@/components/ModeToggle";
+import Logo from "./logo";
 
 const Navbar = () => {
   return (
@@ -20,6 +22,7 @@ const Navbar = () => {
 
         {/* Actions and Mobile Menu */}
         <div className="flex items-center gap-4 md:gap-6">
+          <ModeToggle />
           <Button className="rounded-full px-5 py-2 text-sm md:text-base">
             <Link href="/login" className="block w-full text-center">
               Login
