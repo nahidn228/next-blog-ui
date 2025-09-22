@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import Image from "next/image";
+import { IBlogs } from "@/types";
 
-export default function BlogCard({ post }: { post: any }) {
+export default function BlogCard({ post }: { post: IBlogs }) {
   return (
     <Link
       href={`/blogs/${post.id}`}
@@ -25,7 +25,7 @@ export default function BlogCard({ post }: { post: any }) {
         )}
 
         <div className="p-6">
-          <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">
+          <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors truncate w-full">
             {post.title}
           </h3>
 
