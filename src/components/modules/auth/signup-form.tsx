@@ -22,10 +22,16 @@ import {
 // ✅ Validation schema
 const signupSchema = z
   .object({
-    name: z.string().min(2, { message: "Full name must be at least 2 characters." }),
+    name: z
+      .string()
+      .min(2, { message: "Full name must be at least 2 characters." }),
     email: z.string().email({ message: "Please enter a valid email." }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters." }),
-    confirmPassword: z.string().min(6, { message: "Please confirm your password." }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters." }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Please confirm your password." }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match.",
@@ -54,6 +60,10 @@ export function SignupForm({
   const onSubmit = (values: SignupFormValues) => {
     console.log("Signup Data:", values);
     // 🔑 Handle signup request here
+  };
+
+  const handleSocialRegister = (provider: "google" | "github") => {
+    console.log(`Register with ${provider}`);
   };
 
   return (
@@ -178,7 +188,12 @@ export function SignupForm({
           </div>
 
           {/* GitHub */}
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          <Button
+            type="button"
+            onClick={() => handleSocialRegister("github")}
+            variant="outline"
+            className="w-full flex items-center gap-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -193,7 +208,12 @@ export function SignupForm({
           </Button>
 
           {/* Google */}
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          <Button
+            type="button"
+            onClick={() => handleSocialRegister("google")}
+            variant="outline"
+            className="w-full flex items-center gap-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 533.5 544.3"
