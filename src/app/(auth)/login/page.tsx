@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/login-from";
+import { LoginForm } from "@/components/modules/auth/login-from";
 import Logo from "@/components/shared/Navbar/logo";
 
 

@@ -1,5 +1,5 @@
 import Logo from "@/components/shared/Navbar/logo";
-import { SignupForm } from "@/components/signup-form";
+import { SignupForm } from "@/components/modules/auth/signup-form";
 
 import Image from "next/image";
 import Link from "next/link";
