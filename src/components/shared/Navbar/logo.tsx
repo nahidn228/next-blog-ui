@@ -6,53 +6,46 @@
 
 const Logo = () => {
   return (
-    <div>
+    <div className="w-48 h-auto">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="180"
-        height="50"
-        viewBox="0 0 180 50"
+        viewBox="0 0 200 60"
         fill="none"
+        className="w-full h-auto"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {/* <!-- Circle Icon --> */}
-        <circle cx="25" cy="25" r="23" fill="url(#nextblogGradient)" />
+        {/* Circle Icon */}
+        <circle cx="30" cy="30" r="28" fill="url(#nextblogGradient)" />
+
+        {/* Centered NB inside circle */}
         <text
-          x="25"
-          y="32"
+          x="30"
+          y="30"
           textAnchor="middle"
+          dominantBaseline="middle"
           fontFamily="Inter, Helvetica, Arial, sans-serif"
-          fontWeight="bold"
+          fontWeight="700"
           fontSize="18"
           fill="white"
         >
           NB
         </text>
 
-        {/* <!-- Adaptive Title --> */}
+        {/* Title */}
         <text
-          x="60"
-          y="22"
+          x="70"
+          y="35"
           fontFamily="Inter, Helvetica, Arial, sans-serif"
           fontWeight="700"
-          fontSize="18"
+          fontSize="22"
           fill="currentColor"
         >
-          Next
-        </text>
-        <text
-          x="60"
-          y="40"
-          fontFamily="Inter, Helvetica, Arial, sans-serif"
-          fontWeight="700"
-          fontSize="18"
-          fill="currentColor"
-        >
-          Blog
+          NextBlog
         </text>
 
         <defs>
-          {/* <!-- Neutral gradient for the icon --> */}
-          <linearGradient id="nextblogGradient" x1="0" y1="0" x2="50" y2="50">
+          {/* Modern gradient */}
+          <linearGradient id="nextblogGradient" x1="0" y1="0" x2="60" y2="60">
             <stop offset="0" stopColor="#1A1A1A" />
             <stop offset="1" stopColor="#F2F2F2" />
           </linearGradient>
