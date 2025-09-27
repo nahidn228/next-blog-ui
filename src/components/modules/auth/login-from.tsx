@@ -49,13 +49,18 @@ export function LoginForm({
   const onSubmit = async (values: FieldValues) => {
     console.log("Form Submitted:", values);
     try {
-      const res = await loginUser(values);
-      if (res?.id) {
-        toast.success("User Login successfully");
-        router.push("/");
-      } else {
-        toast.error("User Login Failed");
-      }
+      // const res = await loginUser(values);
+      // if (res?.id) {
+      //   toast.success("User Login successfully");
+      //   router.push("/");
+      // } else {
+      //   toast.error("User Login Failed");
+      // }
+      signIn("credentials", {
+        ...values,
+        callbackUrl: "/dashboard",
+      });
+      toast.success("User Login successfully");
     } catch (error) {
       console.error(error);
     }

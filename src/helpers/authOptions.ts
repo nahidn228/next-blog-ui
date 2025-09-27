@@ -41,18 +41,14 @@ export const authOptions = {
 
           const user = await res.json();
 
-          if (user) {
+          if (user?.id) {
             return {
               id: user?.id,
               name: user?.name,
               email: user?.email,
               role: user?.role,
               phone: user?.phone,
-              picture: user?.picture,
-              status: user?.status,
-              isVerified: user?.isVerified,
-              createdAt: user?.createdAt,
-              updatedAt: user?.updatedAt,
+              image: user?.picture,
             };
           } else {
             return null;
@@ -64,6 +60,21 @@ export const authOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user?.id;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session?.user) {
+        session.user.id = token?.id;
+      }
+      return session;
+    },
+  },
   secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
