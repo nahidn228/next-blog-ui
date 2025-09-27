@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { FieldValues, useForm } from "react-hook-form";
+
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
@@ -19,47 +18,62 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// ✅ Validation schema
-const signupSchema = z
-  .object({
-    name: z
-      .string()
-      .min(2, { message: "Full name must be at least 2 characters." }),
-    email: z.string().email({ message: "Please enter a valid email." }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Please confirm your password." }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match.",
-    path: ["confirmPassword"],
-  });
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { registerUser } from "@/actions/auth";
 
-type SignupFormValues = z.infer<typeof signupSchema>;
+// ✅ Validation schema
+// const signupSchema = z.object({
+//   name: z
+//     .string()
+//     .min(2, { message: "Full name must be at least 2 characters." }),
+//   email: z.string().email({ message: "Please enter a valid email." }),
+//   phone: z.string(),
+//   password: z
+//     .string()
+//     .min(6, { message: "Password must be at least 6 characters." }),
+//   // confirmPassword: z
+//   //   .string()
+//   //   .min(6, { message: "Please confirm your password." }),
+// });
+// // .refine((data) => data.password === data.confirmPassword, {
+// //   message: "Passwords do not match.",
+// //   path: ["confirmPassword"],
+// // });
+
+// type SignupFormValues = z.infer<typeof signupSchema>;
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  // const [showConfirm, setShowConfirm] = useState(false);
+  const router = useRouter();
 
-  const form = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm<FieldValues>({
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  const onSubmit = (values: SignupFormValues) => {
+  const onSubmit = async (values: FieldValues) => {
     console.log("Signup Data:", values);
-    // 🔑 Handle signup request here
+
+    // const { ...data, confirmPassword } = values;
+
+    try {
+      const res = await registerUser(values);
+      if (res?.id) {
+        toast.success("User created successfully");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSocialRegister = (provider: "google" | "github") => {
@@ -110,6 +124,20 @@ export function SignupForm({
               </FormItem>
             )}
           />
+          {/* Phone */}
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input type="phone" placeholder="+8801700000000" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           {/* Password */}
           <FormField
@@ -144,7 +172,7 @@ export function SignupForm({
           />
 
           {/* Confirm Password */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
@@ -173,7 +201,7 @@ export function SignupForm({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Submit button */}
           <Button type="submit" className="w-full">
