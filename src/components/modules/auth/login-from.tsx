@@ -1,8 +1,7 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { FieldValues, useForm } from "react-hook-form";
+
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -20,33 +19,46 @@ import {
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { loginUser } from "@/actions/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // ✅ Validation schema using zod
-const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
-});
+// const loginSchema = z.object({
+//   email: z.string().email({ message: "Please enter a valid email." }),
+//   password: z
+//     .string()
+//     .min(6, { message: "Password must be at least 6 characters." }),
+// });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+// type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const [showPassword, setShowPassword] = useState(false);
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const router = useRouter();
+  const form = useForm<FieldValues>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
+  const onSubmit = async (values: FieldValues) => {
     console.log("Form Submitted:", values);
-    // 🔑 handle login request here
+    try {
+      const res = await loginUser(values);
+      if (res?.id) {
+        toast.success("User Login successfully");
+        router.push("/");
+      } else {
+        toast.error("User Login Failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSocialLogin = (provider: "google" | "github") => {
